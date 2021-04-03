@@ -34,6 +34,8 @@ namespace NSE.Identidade.API.Controllers
         [HttpPost("nova-conta")]
         public async Task<IActionResult> Registrar(UsuarioRegistro usuario)
         {
+            return new StatusCodeResult(401);
+
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
             var user = new IdentityUser
@@ -148,12 +150,12 @@ namespace NSE.Identidade.API.Controllers
             return new UsuarioRespostaLogin
             {
                 AccessToken = encodedToken,
-                ExpiratioIn = TimeSpan.FromHours(_appSettings.ExpiracaoHoras).TotalSeconds,
-                UserToken = new UsuarioToken
+                ExpiresIn = TimeSpan.FromHours(_appSettings.ExpiracaoHoras).TotalSeconds,
+                UsuarioToken = new UsuarioToken
                 {
                     Email = user.Email,
-                    UserId = user.Id,
-                    Claims = claims.Select(x => new USuarioClaim { Type = x.Type, Value = x.Value }).Where(x => !filtro.Contains(x.Type))
+                    Id = user.Id,
+                    Claims = claims.Select(x => new UsuarioClaim { Type = x.Type, Value = x.Value }).Where(x => !filtro.Contains(x.Type))
                 }
             };
         }

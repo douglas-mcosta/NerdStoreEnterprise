@@ -18,7 +18,7 @@ namespace NSE.Identidade.API.Controllers
             }
 
             return BadRequest(new ValidationProblemDetails(new Dictionary<string, string[]> {
-                { "Mensagem", erros.ToArray() }
+                { "Mensagens", erros.ToArray() }
             }));
         }
 

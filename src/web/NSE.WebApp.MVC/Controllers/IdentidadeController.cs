@@ -1,7 +1,7 @@
-﻿using DevIO.Api.ViewModels;
-using Microsoft.AspNetCore.Authentication;
+﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using NSE.WebApp.MVC.Models;
 using NSE.WebApp.MVC.Services;
 using System;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace NSE.WebApp.MVC.Controllers
 {
-    public class IdentidadeController : Controller
+    public class IdentidadeController : MainController
     {
         private readonly IAutenticacaoService _autenticacaoService;
 
@@ -34,36 +34,45 @@ namespace NSE.WebApp.MVC.Controllers
             if (!ModelState.IsValid) return View(usuario);
 
             var response = await _autenticacaoService.Register(usuario);
+            if (ResponsePossuiErros(response.ResponseResult)) return View(usuario);
             await RealizarLogin(response);
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Index", "Home");
         }
 
 
         [HttpGet]
         [Route("login")]
-        public IActionResult Login()
+        public IActionResult Login(string returnUrl = null)
         {
+            ViewData["ReturnUrl"] = returnUrl;
             return View();
         }
 
         [HttpPost]
         [Route("login")]
-        public async Task<IActionResult> Login(UsuarioLogin usuario)
+        public async Task<IActionResult> Login(UsuarioLogin usuario, string returnUrl = null)
         {
+            ViewData["ReturnUrl"] = returnUrl;
             if (!ModelState.IsValid) return View(usuario);
 
             var response = await _autenticacaoService.Login(usuario);
+            if (ResponsePossuiErros(response.ResponseResult))
+                return View(usuario);
 
-            //if (false) return View(usuario);
             await RealizarLogin(response);
-            return RedirectToAction("Index", "Home");
+
+            if (string.IsNullOrEmpty(returnUrl))
+                return RedirectToAction("Index", "Home");
+
+            return LocalRedirect(returnUrl);
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("sair")]
         public async Task<IActionResult> Logout()
         {
-            return View();
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Index", "Home");
         }
 
         private async Task RealizarLogin(UsuarioRespostaLogin response)

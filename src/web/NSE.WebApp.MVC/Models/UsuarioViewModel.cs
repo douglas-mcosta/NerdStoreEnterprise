@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace DevIO.Api.ViewModels
+namespace NSE.WebApp.MVC.Models
 {
     public class UsuarioRegistro
     {
@@ -11,10 +12,11 @@ namespace DevIO.Api.ViewModels
 
         [Required(ErrorMessage = "O campo {0} é obrigatório")]
         [StringLength(100, ErrorMessage = "O campo {0} precisa ter entre {2} e {1} caracteres", MinimumLength = 6)]
-        public string Password { get; set; }
+        public string Senha { get; set; }
 
-        [Compare("Password", ErrorMessage = "As senhas não conferem.")]
-        public string ConfirmPassword { get; set; }
+        [DisplayName("Confirme sua senha")]
+        [Compare("Senha", ErrorMessage = "As senhas não conferem.")]
+        public string SenhaConfirmacao { get; set; }
     }
 
     public class UsuarioLogin
@@ -31,18 +33,21 @@ namespace DevIO.Api.ViewModels
     public class UsuarioRespostaLogin
     {
         public string AccessToken { get; set; }
-        public double ExpiratioIn { get; set; }
-        public UsuarioToken UserToken { get; set; }
+        public double ExpiresIn { get; set; }
+        public UsuarioToken UsuarioToken { get; set; }
+        public ResponseResult ResponseResult { get; set; }
     }
+
     public class UsuarioToken
     {
-        public string UserId { get; set; }
+        public string Id { get; set; }
         public string Email { get; set; }
         public IEnumerable<UsuarioClaim> Claims { get; set; }
     }
+
     public class UsuarioClaim
     {
-        public string Type { get; set; }
         public string Value { get; set; }
+        public string Type { get; set; }
     }
 }
