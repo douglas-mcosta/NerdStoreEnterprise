@@ -1,16 +1,16 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using NSE.Identidade.API.Extensions;
+using Microsoft.IdentityModel.Tokens;
 using NSE.Identidade.API.Models;
+using NSE.WebApi.Core.Identidate;
 using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace NSE.Identidade.API.Controllers
 {
@@ -20,11 +20,11 @@ namespace NSE.Identidade.API.Controllers
 
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
-        private readonly AppSettings _appSettings;
+        private readonly Token _appSettings;
 
         public AuthController(SignInManager<IdentityUser> signInManager,
                               UserManager<IdentityUser> userManager,
-                              IOptions<AppSettings> appSettings)
+                              IOptions<Token> appSettings)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -34,9 +34,11 @@ namespace NSE.Identidade.API.Controllers
         [HttpPost("nova-conta")]
         public async Task<IActionResult> Registrar(UsuarioRegistro usuario)
         {
-            return new StatusCodeResult(401);
-
-            if (!ModelState.IsValid) return CustomResponse(ModelState);
+            
+            if (!ModelState.IsValid)
+            {
+                return CustomResponse(ModelState);
+            }
 
             var user = new IdentityUser
             {
@@ -56,17 +58,19 @@ namespace NSE.Identidade.API.Controllers
             {
                 AdicionarErroProcessamento(erro.Description);
             }
-            
+
             return CustomResponse();
         }
 
         [HttpPost("autenticar")]
         public async Task<IActionResult> Login(UsuarioLogin usuario)
         {
-            if (!ModelState.IsValid) return CustomResponse(ModelState);
+            if (!ModelState.IsValid)
+            {
+                return CustomResponse(ModelState);
+            }
 
-
-            var result = await _signInManager.PasswordSignInAsync(usuario.Email, usuario.Senha,false,true);
+            var result = await _signInManager.PasswordSignInAsync(usuario.Email, usuario.Senha, false, true);
 
             if (result.Succeeded)
             {
@@ -82,7 +86,7 @@ namespace NSE.Identidade.API.Controllers
             AdicionarErroProcessamento("Usuário ou Senha invalido.");
             return CustomResponse();
         }
-    
+
         private async Task<UsuarioRespostaLogin> GerarJwt(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
@@ -91,9 +95,9 @@ namespace NSE.Identidade.API.Controllers
             var identityClaims = await ObterClaimsUauario(claims, user);
             var encodedToken = CodificarToken(identityClaims);
 
-            return ObterRespostaToken(encodedToken, user,claims);         
+            return ObterRespostaToken(encodedToken, user, claims);
         }
-        
+
         private async Task<ClaimsIdentity> ObterClaimsUauario(ICollection<Claim> claims, IdentityUser user)
         {
             var userRoles = await _userManager.GetRolesAsync(user);
@@ -136,7 +140,8 @@ namespace NSE.Identidade.API.Controllers
             return encodedToken;
         }
 
-        private UsuarioRespostaLogin ObterRespostaToken(string encodedToken, IdentityUser user, IEnumerable<Claim> claims) {
+        private UsuarioRespostaLogin ObterRespostaToken(string encodedToken, IdentityUser user, IEnumerable<Claim> claims)
+        {
 
             var filtro = new List<string>(){
                 new string("sub"),

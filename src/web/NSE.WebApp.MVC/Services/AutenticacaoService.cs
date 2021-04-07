@@ -24,7 +24,7 @@ namespace NSE.WebApp.MVC.Services
 
             if (!TratarErrosResponse(response))
             {
-                
+
                 return new UsuarioRespostaLogin
                 {
                     ResponseResult = await DeserializarObjetoResponse<ResponseResult>(response)

@@ -8,7 +8,7 @@ namespace NSE.WebApp.MVC.Controllers
     {
         protected bool ResponsePossuiErros(ResponseResult resposata)
         {
-            if(resposata != null && resposata.Errors.Mensagens.Any())
+            if (resposata != null && resposata.Errors.Mensagens.Any())
             {
                 foreach (var mensagem in resposata.Errors.Mensagens)
                 {

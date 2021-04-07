@@ -14,11 +14,14 @@ namespace NSE.WebApp.MVC
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(environment.ContentRootPath)
-                .AddJsonFile("appsettings.json", true,true)
+                .AddJsonFile("appsettings.json", true, true)
                 .AddJsonFile($"appsettings.{environment.EnvironmentName}.json", true, true)
                 .AddEnvironmentVariables();
 
-            if (environment.IsDevelopment()) builder.AddUserSecrets<Startup>();
+            if (environment.IsDevelopment())
+            {
+                builder.AddUserSecrets<Startup>();
+            }
 
             Configuration = builder.Build();
         }
@@ -26,7 +29,7 @@ namespace NSE.WebApp.MVC
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvcConfiguration(Configuration);
-            services.ResolveDependencies();
+            services.ResolveDependencies(Configuration);
             services.AddIdentityConfiguration();
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

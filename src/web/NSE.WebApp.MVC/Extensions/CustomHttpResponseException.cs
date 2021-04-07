@@ -7,7 +7,7 @@ namespace NSE.WebApp.MVC.Extensions
     {
         public HttpStatusCode StatusCode;
         public CustomHttpResponseException() { }
-       
+
         public CustomHttpResponseException(string message, Exception innerException) : base(message, innerException) { }
 
         public CustomHttpResponseException(HttpStatusCode statusCode)

@@ -6,16 +6,16 @@
 @{
     if (Model == null)
     {
-        <div>
-            <h2>Ooops! Ocorreu um erro, mas não se preocupe. Nosso time será avisado e iremos corrigir em breve!</h2>
+        <div class="container">
+            <h2 class="text-center pt-5">Ooops! Ocorreu um erro, mas não se preocupe. Nosso time será avisado e iremos corrigir em breve!</h2>
         </div>
     }
     else
     {
         ViewData["Title"] = Model.Titulo;
 
-        <div>
-            <h2>@Html.Raw(Model.Mensagem)</h2>
+        <div class="container">
+            <h2 class="text-center pt-5">@Html.Raw(Model.Mensagem)</h2>
         </div>
 
     }

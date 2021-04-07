@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NSE.WebApp.MVC.Models;
-using System.Diagnostics;
 
 namespace NSE.WebApp.MVC.Controllers
 {
@@ -24,7 +23,19 @@ namespace NSE.WebApp.MVC.Controllers
             return View();
         }
 
-        [Route("erro/{id:length(3,3)}")]
+        [Route("sistema-indisponivel")]
+        public IActionResult SistemaIndisponivel()
+        {
+
+            var modelErro = new ErrorViewModel();
+            modelErro.Mensagem = "O Sistema está temporatiamente indisponivel, isto pode ocorrer em momentos de sobrecarga de usuários.";
+            modelErro.Titulo = "Sistema indisponível";
+            modelErro.ErroCode = 500;
+
+            return View("Error", modelErro);
+        }
+
+            [Route("erro/{id:length(3,3)}")]
         public IActionResult Error(int id)
         {
             var modelErro = new ErrorViewModel();

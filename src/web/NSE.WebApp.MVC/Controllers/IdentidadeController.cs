@@ -31,10 +31,17 @@ namespace NSE.WebApp.MVC.Controllers
         [Route("nova-conta")]
         public async Task<IActionResult> Registro(UsuarioRegistro usuario)
         {
-            if (!ModelState.IsValid) return View(usuario);
+            if (!ModelState.IsValid)
+            {
+                return View(usuario);
+            }
 
             var response = await _autenticacaoService.Register(usuario);
-            if (ResponsePossuiErros(response.ResponseResult)) return View(usuario);
+            if (ResponsePossuiErros(response.ResponseResult))
+            {
+                return View(usuario);
+            }
+
             await RealizarLogin(response);
             return RedirectToAction("Index", "Home");
         }
@@ -53,16 +60,23 @@ namespace NSE.WebApp.MVC.Controllers
         public async Task<IActionResult> Login(UsuarioLogin usuario, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
-            if (!ModelState.IsValid) return View(usuario);
+            if (!ModelState.IsValid)
+            {
+                return View(usuario);
+            }
 
             var response = await _autenticacaoService.Login(usuario);
             if (ResponsePossuiErros(response.ResponseResult))
+            {
                 return View(usuario);
+            }
 
             await RealizarLogin(response);
 
             if (string.IsNullOrEmpty(returnUrl))
-                return RedirectToAction("Index", "Home");
+            {
+                return RedirectToAction("Index", "vitrine");
+            }
 
             return LocalRedirect(returnUrl);
         }

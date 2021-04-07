@@ -1,10 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace NSE.WebApp.MVC.Configuration
 {
@@ -14,7 +10,8 @@ namespace NSE.WebApp.MVC.Configuration
         {
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options => {
+                .AddCookie(options =>
+                {
                     options.LoginPath = "/login";
                     options.AccessDeniedPath = "/acesso-negado";
                 });

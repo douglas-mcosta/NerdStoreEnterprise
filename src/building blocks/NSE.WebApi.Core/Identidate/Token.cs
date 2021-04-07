@@ -1,6 +1,6 @@
-﻿namespace NSE.Identidade.API.Extensions
+﻿namespace NSE.WebApi.Core.Identidate
 {
-    public class AppSettings
+    public class Token
     {
 
         public string Secret { get; set; }

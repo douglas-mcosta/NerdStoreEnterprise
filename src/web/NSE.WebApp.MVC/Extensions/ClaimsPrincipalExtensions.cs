@@ -8,15 +8,16 @@ namespace NSE.WebApp.MVC.Extensions
 
         public static string GetUserId(this ClaimsPrincipal principal)
         {
-            if(principal == null)
+            if (principal == null)
             {
                 throw new ArgumentException(nameof(principal));
             }
             var claim = principal.FindFirst("sub");
             return claim?.Value;
-        } 
+        }
 
-        public static string GetUserEmail(this ClaimsPrincipal principal) {
+        public static string GetUserEmail(this ClaimsPrincipal principal)
+        {
 
             if (principal == null)
             {
@@ -33,7 +34,7 @@ namespace NSE.WebApp.MVC.Extensions
             {
                 throw new ArgumentException(nameof(principal));
             }
-            var claim = principal.FindFirst("JWT");
+            var claim = principal.FindFirst("JTW");
             return claim?.Value;
         }
     }
