@@ -1,7 +1,7 @@
 ﻿using NSE.Core.DomainObjects;
 using System;
 
-namespace NSE.Cliente.API.Models
+namespace NSE.Clientes.API.Models
 {
     public class Cliente : Entity, IAggregateRoot
     {
@@ -14,7 +14,7 @@ namespace NSE.Cliente.API.Models
 
         //EF - Contrutor para EF
         protected Cliente() { }
-        public Cliente(Guid id, string nome, string email, string cpf, bool excluido)
+        public Cliente(Guid id, string nome, string email, string cpf)
         {
             Id = id;
             Nome = nome;
