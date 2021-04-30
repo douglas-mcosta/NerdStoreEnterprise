@@ -23,7 +23,6 @@ namespace NSE.Clientes.API.Configuration
 
             //Mediator - Event
             services.AddScoped<INotificationHandler<ClienteRegistradoEvent>, ClienteEventHandler>();
-
         }
     }
 }

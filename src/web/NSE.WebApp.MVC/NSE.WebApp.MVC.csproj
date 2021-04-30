@@ -19,4 +19,8 @@
 	  <PackageReference Include="refit" Version="6.0.38" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\building blocks\NSE.Core\NSE.Core.csproj" />
+  </ItemGroup>
+
 </Project>

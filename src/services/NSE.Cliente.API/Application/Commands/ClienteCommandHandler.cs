@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 
 namespace NSE.Clientes.API.Application.Commands
 {
-    public class ClienteCommandHandler : CommandHandler, IRequestHandler<RegistrarClienteCommand, ValidationResult>
+    public class ClienteCommandHandler : CommandHandler, 
+        IRequestHandler<RegistrarClienteCommand, ValidationResult>
     {
 
         private readonly IClienteRepository _clienteRepository;

@@ -1,21 +1,17 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using NSE.Catalogo.API.Data;
-using NSE.WebApi.Core.Identidate;
 
-namespace NSE.Catalogo.API.Configuration
+namespace NSE.Carrinho.API.Configuration
 {
     public static class ApiConfig
     {
-
-        public static void AddApiConfiguration(this IServiceCollection services, IConfiguration configuration)
+        public static void AddApiConfiguration(this IServiceCollection services)
         {
-            services.AddDbContext<CatalogoContext>(options =>
-             options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+
+            //services.AddDbContext<CatalogoContext>(options =>
+            // options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
             services.AddControllers();
 
@@ -41,14 +37,14 @@ namespace NSE.Catalogo.API.Configuration
             app.UseHttpsRedirection();
 
             app.UseRouting();
-            app.UseJwtConfiguration();
+
             app.UseAuthorization();
             app.UseCors("Total");
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
-
         }
     }
 }
