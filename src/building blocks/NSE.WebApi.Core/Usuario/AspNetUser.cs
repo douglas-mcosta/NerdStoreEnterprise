@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 
-namespace NSE.WebApp.MVC.Extensions
+namespace NSE.WebApi.Core.Usuario
 {
-    public class AspNetUser : IUser
+    public class AspNetUser : IAspNetUser
     {
         private readonly IHttpContextAccessor _accessor;
 
@@ -13,7 +13,9 @@ namespace NSE.WebApp.MVC.Extensions
         {
             _accessor = acessor;
         }
+
         public string Name => _accessor.HttpContext.User.Identity.Name;
+
         public Guid ObterUserId()
         {
             return EstaAutenticado() ? Guid.Parse(_accessor.HttpContext.User.GetUserId()) : Guid.Empty;
@@ -28,10 +30,12 @@ namespace NSE.WebApp.MVC.Extensions
         {
             return EstaAutenticado() ? _accessor.HttpContext.User.GetUserToken() : "";
         }
+
         public bool EstaAutenticado()
         {
             return _accessor.HttpContext.User.Identity.IsAuthenticated;
         }
+
         public bool PossuiRole(string role)
         {
             return _accessor.HttpContext.User.IsInRole(role);

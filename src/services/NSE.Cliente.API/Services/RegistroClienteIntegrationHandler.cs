@@ -28,31 +28,30 @@ namespace NSE.Clientes.API.Services
             return Task.CompletedTask;
         }
 
-        private void  SetResponder()
+        private void SetResponder()
         {
             _bus.RespondAsync<UsuarioRegistradoIntegrationEvent, ResponseMessage>(async resquest =>
            await RegistrarCliente(resquest));
 
             _bus.AdvancedBus.Connected += OnConnect;
-
         }
-        private void OnConnect(object s, EventArgs e) {
 
+        private void OnConnect(object s, EventArgs e)
+        {
             SetResponder();
         }
 
         private async Task<ResponseMessage> RegistrarCliente(UsuarioRegistradoIntegrationEvent message)
         {
-            var clienteCommand = new RegistrarClienteCommand(message.Id, message.Nome,message.Email,message.Cpf);
+            var clienteCommand = new RegistrarClienteCommand(message.Id, message.Nome, message.Email, message.Cpf);
             ValidationResult sucesso;
             using (var scope = _serviceProvider.CreateScope())
             {
                 var mediator = scope.ServiceProvider.GetRequiredService<IMediatorHandler>();
-                 sucesso = await mediator.EnviarComando(clienteCommand);
+                sucesso = await mediator.EnviarComando(clienteCommand);
             }
 
             return new ResponseMessage(sucesso);
         }
-
     }
 }
