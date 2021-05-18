@@ -1,11 +1,11 @@
 ﻿using NSE.Core.Communication;
-using NSE.WebApp.MVC.Extensions;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace NSE.WebApp.MVC.Services
+namespace NSE.Bff.Compras.Services
 {
     public abstract class Service
     {
@@ -17,7 +17,6 @@ namespace NSE.WebApp.MVC.Services
                "application/json"
                );
         }
-
         protected async Task<T> DeserializarObjetoResponse<T>(HttpResponseMessage responseMessage)
         {
             var options = new JsonSerializerOptions
@@ -30,16 +29,8 @@ namespace NSE.WebApp.MVC.Services
 
         protected bool TratarErrosResponse(HttpResponseMessage response)
         {
-            switch ((int)response.StatusCode)
-            {
-                case 401:
-                case 403:
-                case 404:
-                case 500:
-                    throw new CustomHttpResponseException(response.StatusCode);
-                case 400:
-                    return false;
-            }
+
+            if (response.StatusCode == HttpStatusCode.BadRequest) return false;
 
             response.EnsureSuccessStatusCode();
             return true;

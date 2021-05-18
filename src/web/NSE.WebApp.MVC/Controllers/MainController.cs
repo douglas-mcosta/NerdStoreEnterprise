@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NSE.WebApp.MVC.Models;
+using NSE.Core.Communication;
 using System.Linq;
 
 namespace NSE.WebApp.MVC.Controllers
@@ -26,7 +26,7 @@ namespace NSE.WebApp.MVC.Controllers
 
         protected bool OperecaoValida()
         {
-            return ModelState is { ErrorCount: 0};
+            return ModelState is { ErrorCount: 0 };
         }
     }
 }

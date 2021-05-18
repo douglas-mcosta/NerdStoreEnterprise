@@ -66,7 +66,7 @@ namespace NSE.Carrinho.API.Controllers
             return CustomResponse();
         }
 
-        [HttpDelete("Carrinho/{produtoId}")]
+        [HttpDelete("carrinho/{produtoId}")]
         public async Task<IActionResult> RemoverItemCarrinho(Guid produtoId)
         {
             var carrinho = await ObterCarrinhoCliente();

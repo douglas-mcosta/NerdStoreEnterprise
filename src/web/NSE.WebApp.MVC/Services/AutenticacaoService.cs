@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
+using NSE.Core.Communication;
 using NSE.WebApp.MVC.Extensions;
 using NSE.WebApp.MVC.Models;
 using System;
@@ -24,7 +25,6 @@ namespace NSE.WebApp.MVC.Services
 
             if (!TratarErrosResponse(response))
             {
-
                 return new UsuarioRespostaLogin
                 {
                     ResponseResult = await DeserializarObjetoResponse<ResponseResult>(response)

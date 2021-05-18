@@ -5,11 +5,11 @@ namespace NSE.WebApp.MVC.Models
     public class CarrinhoViewModel
     {
         public decimal ValorTotal { get; set; }
-        public List<ItemProdutoViewModel> Itens { get; set; }
+        public List<ItemCarrinhoViewModel> Itens { get; set; }
 
         public CarrinhoViewModel()
         {
-            Itens = new List<ItemProdutoViewModel>();
+            Itens = new List<ItemCarrinhoViewModel>();
         }
     }
 }
