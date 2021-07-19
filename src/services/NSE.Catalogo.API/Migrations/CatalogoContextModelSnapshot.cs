@@ -41,7 +41,7 @@ namespace NSE.Catalogo.API.Migrations
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasColumnType("varchar(250)");
+                        .HasColumnType("varchar(300)");
 
                     b.Property<int>("QuantidadeEstoque")
                         .HasColumnType("int");

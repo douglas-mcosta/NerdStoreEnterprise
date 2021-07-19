@@ -11,7 +11,7 @@ namespace NSE.Catalogo.API.Data.Mapping
 
             builder.Property(p => p.Nome)
                 .IsRequired()
-                .HasColumnType("varchar(250)");
+                .HasColumnType("varchar(300)");
 
             builder.Property(p => p.Descricao)
                 .IsRequired()

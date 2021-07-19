@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace NSE.Carrinho.API.Data
 {
-    public class CarrinhoContext : DbContext
+    public sealed class CarrinhoContext : DbContext
     {
         public CarrinhoContext(DbContextOptions<CarrinhoContext> options) : base(options)
         {
@@ -31,12 +31,31 @@ namespace NSE.Carrinho.API.Data
                 .HasName("IDX_Cliente");
 
             modelBuilder.Entity<CarrinhoCliente>()
+                .Ignore(c => c.Voucher)
+                .OwnsOne(carrinho=>carrinho.Voucher, voucher =>
+                {
+                    voucher.Property(vc => vc.Codigo)
+                        .HasColumnName("VoucherCodigo")
+                        .HasColumnType("varchar(50)");
+
+                    voucher.Property(vc => vc.TipoDesconto)
+                        .HasColumnName("TipoDesconto");
+
+                    voucher.Property(vc => vc.ValorDesconto)
+                        .HasColumnName("ValorDesconto");
+
+                    voucher.Property(vc => vc.Percentual)
+                        .HasColumnName("Percentual");
+                });
+
+
+            modelBuilder.Entity<CarrinhoCliente>()
                 .HasMany(c => c.Itens)
                 .WithOne(i => i.CarrinhoCliente)
                 .HasForeignKey(c => c.CarrinhoId);
 
             foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
-                relationship.DeleteBehavior = DeleteBehavior.ClientSetNull;
+                relationship.DeleteBehavior = DeleteBehavior.Cascade;
         }
     }
 }

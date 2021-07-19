@@ -15,8 +15,9 @@ namespace NSE.Clientes.API.Models
         public Guid ClienteId { get; private set; }
         public Cliente Cliente { get; protected set; }
 
-        public Endereco(string logradouro, string numero, string complemento, string bairro, string cep, string cidade, string estado)
+        public Endereco(Guid clienteId,string logradouro, string numero, string complemento, string bairro, string cep, string cidade, string estado)
         {
+            ClienteId = clienteId;
             Logradouro = logradouro;
             Numero = numero;
             Complemento = complemento;
