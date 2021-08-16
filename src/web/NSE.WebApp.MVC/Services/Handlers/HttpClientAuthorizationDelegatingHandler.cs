@@ -9,7 +9,7 @@ namespace NSE.WebApp.MVC.Services.Handlers
 {
     public class HttpClientAuthorizationDelegatingHandler : DelegatingHandler
     {
-        private readonly IAspNetUser _user;
+           private readonly IAspNetUser _user;
 
         public HttpClientAuthorizationDelegatingHandler(IAspNetUser user)
         {
@@ -26,6 +26,7 @@ namespace NSE.WebApp.MVC.Services.Handlers
             }
 
             var token = _user.ObterUserToken();
+
             if (token != null)
             {
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);

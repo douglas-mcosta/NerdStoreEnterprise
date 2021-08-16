@@ -12,6 +12,10 @@ namespace NSE.WebApp.MVC.Controllers
     {
         public readonly IClienteService _clienteService;
 
+        public ClienteController(IClienteService clienteService)
+        {
+            _clienteService = clienteService;
+        }
 
         public IActionResult Index()
         {

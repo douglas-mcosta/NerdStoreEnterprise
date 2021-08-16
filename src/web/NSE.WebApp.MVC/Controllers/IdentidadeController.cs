@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
+using NSE.WebApi.Core.Usuario;
 using NSE.WebApp.MVC.Models;
 using NSE.WebApp.MVC.Services;
 using System;
@@ -13,7 +14,7 @@ namespace NSE.WebApp.MVC.Controllers
 {
     public class IdentidadeController : MainController
     {
-        private readonly IAutenticacaoService _autenticacaoService;
+             private readonly IAutenticacaoService _autenticacaoService;
 
         public IdentidadeController(IAutenticacaoService autenticacaoService)
         {
@@ -29,23 +30,18 @@ namespace NSE.WebApp.MVC.Controllers
 
         [HttpPost]
         [Route("nova-conta")]
-        public async Task<IActionResult> Registro(UsuarioRegistro usuario)
+        public async Task<IActionResult> Registro(UsuarioRegistro usuarioRegistro)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(usuario);
-            }
+            if (!ModelState.IsValid) return View(usuarioRegistro);
 
-            var response = await _autenticacaoService.Register(usuario);
-            if (ResponsePossuiErros(response.ResponseResult))
-            {
-                return View(usuario);
-            }
+            var resposta = await _autenticacaoService.Register(usuarioRegistro);
 
-            await RealizarLogin(response);
-            return RedirectToAction("Index", "Home");
+            if (ResponsePossuiErros(resposta.ResponseResult)) return View(usuarioRegistro);
+
+            await RealizarLogin(resposta);
+
+            return RedirectToAction("Index", "Catalogo");
         }
-
 
         [HttpGet]
         [Route("login")]
@@ -57,26 +53,18 @@ namespace NSE.WebApp.MVC.Controllers
 
         [HttpPost]
         [Route("login")]
-        public async Task<IActionResult> Login(UsuarioLogin usuario, string returnUrl = null)
+        public async Task<IActionResult> Login(UsuarioLogin usuarioLogin, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
-            if (!ModelState.IsValid)
-            {
-                return View(usuario);
-            }
+            if (!ModelState.IsValid) return View(usuarioLogin);
 
-            var response = await _autenticacaoService.Login(usuario);
-            if (ResponsePossuiErros(response.ResponseResult))
-            {
-                return View(usuario);
-            }
+            var resposta = await _autenticacaoService.Login(usuarioLogin);
 
-            await RealizarLogin(response);
+            if (ResponsePossuiErros(resposta.ResponseResult)) return View(usuarioLogin);
 
-            if (string.IsNullOrEmpty(returnUrl))
-            {
-                return RedirectToAction("Index", "vitrine");
-            }
+            await RealizarLogin(resposta);
+
+            if (string.IsNullOrEmpty(returnUrl)) return RedirectToAction("Index", "Catalogo");
 
             return LocalRedirect(returnUrl);
         }
@@ -86,17 +74,18 @@ namespace NSE.WebApp.MVC.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Catalogo");
         }
 
-        private async Task RealizarLogin(UsuarioRespostaLogin response)
+        private async Task RealizarLogin(UsuarioRespostaLogin resposta)
         {
-            var token = ObterTokenFormatado(response.AccessToken);
+            var token = ObterTokenFormatado(resposta.AccessToken);
+
             var claims = new List<Claim>();
-            claims.Add(new Claim("JTW", response.AccessToken));
+            claims.Add(new Claim("JWT", resposta.AccessToken));
             claims.AddRange(token.Claims);
 
-            var claimsIndentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
             var authProperties = new AuthenticationProperties
             {
@@ -106,13 +95,13 @@ namespace NSE.WebApp.MVC.Controllers
 
             await HttpContext.SignInAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme,
-                new ClaimsPrincipal(claimsIndentity),
+                new ClaimsPrincipal(claimsIdentity),
                 authProperties);
-
         }
-        private static JwtSecurityToken ObterTokenFormatado(string accessToken)
+
+        private static JwtSecurityToken ObterTokenFormatado(string jwtToken)
         {
-            return new JwtSecurityTokenHandler().ReadToken(accessToken) as JwtSecurityToken;
+            return new JwtSecurityTokenHandler().ReadToken(jwtToken) as JwtSecurityToken;
         }
     }
 }

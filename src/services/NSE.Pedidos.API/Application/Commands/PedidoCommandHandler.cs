@@ -38,7 +38,7 @@ namespace NSE.Pedidos.API.Application.Commands
             //se pagamento ok
             pedido.AutorizarPedido();
             //adicionar evento
-            pedido.AdicionarEvento(new PedidoRealizadoEvent(pedido.Id,pedido.ClientId));
+            pedido.AdicionarEvento(new PedidoRealizadoEvent(pedido.Id,pedido.ClienteId));
             //adicionar pedido repositorio
             _pedidoRepository.Adicionar(pedido);
             //persistir dados de pedido e voucher

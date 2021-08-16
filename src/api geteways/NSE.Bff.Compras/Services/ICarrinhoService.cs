@@ -7,11 +7,11 @@ namespace NSE.Bff.Compras.Services
 {
     public interface ICarrinhoService
     {
-        Task<CarrinhoDto> ObterCarrinho();
+        Task<CarrinhoDTO> ObterCarrinho();
 
-        Task<ResponseResult> AdicionarItemCarrinho(ItemCarrinhoDto produto);
+        Task<ResponseResult> AdicionarItemCarrinho(ItemCarrinhoDTO produto);
 
-        Task<ResponseResult> AtualizarItemCarrinho(Guid produtoId, ItemCarrinhoDto produto);
+        Task<ResponseResult> AtualizarItemCarrinho(Guid produtoId, ItemCarrinhoDTO produto);
 
         Task<ResponseResult> RemoverItemCarrinho(Guid produtoId);
 

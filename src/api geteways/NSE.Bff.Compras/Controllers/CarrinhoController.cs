@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using NSE.Bff.Compras.Models;
 using NSE.Bff.Compras.Services;
 using NSE.WebApi.Core.Controllers;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace NSE.Bff.Compras.Controllers
 {
+    [Authorize]
     public class CarrinhoController : MainController
     {
         private readonly ICarrinhoService _carrinhoService;
@@ -22,7 +24,7 @@ namespace NSE.Bff.Compras.Controllers
         }
 
         [HttpPost("compras/carrinho/items")]
-        public async Task<IActionResult> AdicionarItemCarrinho(ItemCarrinhoDto itemProdutoCarrinho)
+        public async Task<IActionResult> AdicionarItemCarrinho(ItemCarrinhoDTO itemProdutoCarrinho)
         {
             var produto = await _catalogoService.ObterPorId(itemProdutoCarrinho.ProdutoId);
             await ValidarItemCarrinho(produto, itemProdutoCarrinho.Quantidade);
@@ -39,7 +41,7 @@ namespace NSE.Bff.Compras.Controllers
         }
 
         [HttpPut("compras/carrinho/items/{produtoId}")]
-        public async Task<IActionResult> AtualizarItemCarrinho(Guid produtoId, ItemCarrinhoDto itemProdutoCarrinho)
+        public async Task<IActionResult> AtualizarItemCarrinho(Guid produtoId, ItemCarrinhoDTO itemProdutoCarrinho)
         {
             var produto = await _catalogoService.ObterPorId(produtoId);
             await ValidarItemCarrinho(produto, itemProdutoCarrinho.Quantidade);
@@ -94,7 +96,7 @@ namespace NSE.Bff.Compras.Controllers
             return CustomResponse(response);
         }
 
-        private async Task ValidarItemCarrinho(ItemProdutoDto produto, int quantidade)
+        private async Task ValidarItemCarrinho(ItemProdutoDTO produto, int quantidade)
         {
             if (produto is null) AdicionarErroProcessamento("Produto inexistente.");
             if (quantidade < 1) AdicionarErroProcessamento($"Escolha ao menos uma unidade do produto {produto.Nome}.");

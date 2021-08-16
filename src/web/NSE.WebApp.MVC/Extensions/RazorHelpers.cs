@@ -36,6 +36,11 @@ namespace NSE.WebApp.MVC.Extensions
             return unidades > 1 ? $"{unidades} unidades" : $"{unidades} unidade";
         }
 
+        public static string UnidadesPorProdutoValorTotal(this RazorPage page, int unidades, decimal valor)
+        {
+            return $"{unidades}x {FormatoMoeda(valor)} = Total: {FormatoMoeda(valor * unidades)}";
+        }
+
         public static string SelectOptionsPorQuantidade(this RazorPage page, int quantidade, int valorSelecionado = 0)
         {
             var sb = new StringBuilder();
@@ -47,6 +52,44 @@ namespace NSE.WebApp.MVC.Extensions
             }
 
             return sb.ToString();
+        }
+
+        private static string FormatoMoeda(decimal valor)
+        {
+            return string.Format(Thread.CurrentThread.CurrentCulture, "{0:C}", valor);
+        }
+
+        public static string ExibeStatus(this RazorPage page, int status)
+        {
+            var statusMensagem = "";
+            var statusClasse = "";
+
+            switch (status)
+            {
+                case 1:
+                    statusClasse = "info";
+                    statusMensagem = "Em aprovação";
+                    break;
+                case 2:
+                    statusClasse = "primary";
+                    statusMensagem = "Aprovado";
+                    break;
+                case 3:
+                    statusClasse = "danger";
+                    statusMensagem = "Recusado";
+                    break;
+                case 4:
+                    statusClasse = "success";
+                    statusMensagem = "Entregue";
+                    break;
+                case 5:
+                    statusClasse = "warning";
+                    statusMensagem = "Cancelado";
+                    break;
+
+            }
+
+            return $"<span class='badge badge-{statusClasse}'>{statusMensagem}</span>";
         }
     }
 }

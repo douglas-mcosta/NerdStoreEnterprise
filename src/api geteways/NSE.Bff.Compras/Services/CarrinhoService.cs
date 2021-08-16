@@ -17,15 +17,15 @@ namespace NSE.Bff.Compras.Services
             httpClient.BaseAddress = new Uri(settings.Value.CarrinhoUrl);
             _httpClient = httpClient;
         }
-        public async Task<CarrinhoDto> ObterCarrinho()
+        public async Task<CarrinhoDTO> ObterCarrinho()
         {
             var response = await _httpClient.GetAsync("/carrinho/");
             TratarErrosResponse(response);
 
-            return await DeserializarObjetoResponse<CarrinhoDto>(response);
+            return await DeserializarObjetoResponse<CarrinhoDTO>(response);
         }
 
-        public async Task<ResponseResult> AdicionarItemCarrinho(ItemCarrinhoDto produto)
+        public async Task<ResponseResult> AdicionarItemCarrinho(ItemCarrinhoDTO produto)
         {
             var itemContent = ObterConteudo(produto);
             var response = await _httpClient.PostAsync("/carrinho/", itemContent);
@@ -36,7 +36,7 @@ namespace NSE.Bff.Compras.Services
             return ReturnOk();
         }
 
-        public async Task<ResponseResult> AtualizarItemCarrinho(Guid produtoId, ItemCarrinhoDto produto)
+        public async Task<ResponseResult> AtualizarItemCarrinho(Guid produtoId, ItemCarrinhoDTO produto)
         {
             var item = ObterConteudo(produto);
 

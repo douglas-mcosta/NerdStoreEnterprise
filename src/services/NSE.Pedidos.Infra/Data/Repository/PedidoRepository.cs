@@ -33,7 +33,7 @@ namespace NSE.Pedidos.Infra.Data.Repository
             return await _context.Pedidos
                 .Include(p => p.PedidoItems)
                 .AsNoTracking()
-                .Where(p => p.ClientId == clienteId)
+                .Where(p => p.ClienteId == clienteId)
                 .ToListAsync();
         }
 
@@ -49,9 +49,11 @@ namespace NSE.Pedidos.Infra.Data.Repository
         }
 
 
-        public void Adicionar(Pedido pedido) => _context.Add(pedido);
+        public void Adicionar(Pedido pedido) 
+            => _context.Add(pedido);
 
-        public void Atualizar(Pedido pedido) => _context.Update(pedido);
+        public void Atualizar(Pedido pedido) 
+            => _context.Update(pedido);
         
         public void Dispose()
         {

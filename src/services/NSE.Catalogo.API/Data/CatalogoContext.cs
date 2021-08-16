@@ -13,7 +13,7 @@ namespace NSE.Catalogo.API.Data
 
         public CatalogoContext(DbContextOptions<CatalogoContext> context) : base(context) { }
 
-        public DbSet<Produto> produtos { get; set; }
+        public DbSet<Produto> Produtos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -14,7 +14,7 @@ namespace NSE.Bff.Compras.Configuration
         public static void RegisterServices(this IServiceCollection services)
         {
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddSingleton<IAspNetUser, AspNetUser>();
+            services.AddScoped<IAspNetUser, AspNetUser>();
 
             services.AddTransient<HttpClientAuthorizationDelegatingHandler>();
 
@@ -32,6 +32,12 @@ namespace NSE.Bff.Compras.Configuration
                 .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
                 .AddPolicyHandler(PollyExtensions.EsperarTentar())
                 .AddTransientHttpErrorPolicy(p => p.CircuitBreakerAsync(5, TimeSpan.FromSeconds(5)));
+
+              services.AddHttpClient<IClienteService, ClienteService>()
+                .AddHttpMessageHandler<HttpClientAuthorizationDelegatingHandler>()
+                .AddPolicyHandler(PollyExtensions.EsperarTentar())
+                .AddTransientHttpErrorPolicy(p => p.CircuitBreakerAsync(5, TimeSpan.FromSeconds(5)));
+
         }
     }
 }

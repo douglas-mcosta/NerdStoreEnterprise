@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NSE.Carrinho.API.Data;
+using NSE.WebApi.Core.Identidate;
 
 namespace NSE.Carrinho.API.Configuration
 {
@@ -41,7 +42,7 @@ namespace NSE.Carrinho.API.Configuration
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseJwtConfiguration();
             app.UseCors("Total");
 
             app.UseEndpoints(endpoints =>

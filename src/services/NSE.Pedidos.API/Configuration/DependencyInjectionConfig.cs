@@ -31,6 +31,7 @@ namespace NSE.Pedidos.API.Configuration
             services.AddDbContext<PedidoContext>();
             services.AddScoped<IMediatorHandler,MediatorHandler>();
             services.AddScoped<IVoucherRepository,VoucherRepository>();
+            services.AddScoped<IPedidoQueries,PedidoQueries>();
             services.AddScoped<IPedidoRepository,PedidoRepository>();
 
         }

@@ -28,7 +28,7 @@ namespace NSE.Pedidos.Infra.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("ClientId")
+                    b.Property<Guid>("ClienteId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("Codigo")
@@ -106,10 +106,10 @@ namespace NSE.Pedidos.Infra.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(100)");
 
-                    b.Property<DateTime?>("DataAtualizacao")
+                    b.Property<DateTime>("DataCriacao")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DataCriacao")
+                    b.Property<DateTime?>("DataUtilizacao")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DataValidade")

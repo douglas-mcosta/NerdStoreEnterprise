@@ -16,9 +16,11 @@ namespace NSE.Clientes.API.Controllers
         private readonly IClienteRepository _clienteRepository;
         private readonly IAspNetUser _user;
 
-        public ClientesController(IMediatorHandler mediatorHandler)
+        public ClientesController(IMediatorHandler mediatorHandler, IClienteRepository clienteRepository, IAspNetUser user)
         {
             _mediatorHandler = mediatorHandler;
+            _clienteRepository = clienteRepository;
+            _user = user;
         }
 
         [HttpGet("endereco")]

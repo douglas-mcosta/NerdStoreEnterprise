@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using NSE.Carrinho.API.Data;
 using NSE.Carrinho.API.Model;
@@ -9,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace NSE.Carrinho.API.Controllers
 {
+    [Authorize]
     public class CarrinhoController : MainController
     {
         private readonly CarrinhoContext _context;
@@ -20,8 +22,7 @@ namespace NSE.Carrinho.API.Controllers
             _context = context;
         }
 
-        [HttpGet]
-        [Route("carrinho")]
+          [HttpGet("carrinho")]
         public async Task<CarrinhoCliente> ObterCarrinho()
         {
             var carrinho = await ObterCarrinhoCliente() ?? new CarrinhoCliente();
@@ -121,6 +122,7 @@ namespace NSE.Carrinho.API.Controllers
         private void ManipularNovoCarrinho(CarrinhoItem item)
         {
             var carrinho = new CarrinhoCliente(_user.ObterUserId());
+            var userId = _user.ObterUserId();
             carrinho.AdicionarItem(item);
             ValidarCarrinho(carrinho);
             _context.CarrinhoCliente.Add(carrinho);

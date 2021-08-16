@@ -2,7 +2,7 @@
 
 namespace NSE.Bff.Compras.Models
 {
-    public class ItemCarrinhoDto
+    public class ItemCarrinhoDTO
     {
         public Guid ProdutoId { get; set; }
         public string Nome { get; set; }

@@ -1,12 +1,128 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-        
         {
-            "name": ".NET Core Launch (web)",
+            "name": "BFF - API",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/api geteways/NSE.Bff.Compras/bin/Debug/netcoreapp3.1/NSE.Bff.Compras.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/api geteways/NSE.Bff.Compras",
+            "stopAtEntry": false,
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "ASPNETCORE_URLS":"https://localhost:5007"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            },
+            "launchBrowser": {
+                "enabled": false
+            }
+        },
+        {
+            "name": "Carrinho - API",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/services/NSE.Carrinho.API/bin/Debug/netcoreapp3.1/NSE.Carrinho.API.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/services/NSE.Carrinho.API",
+            "stopAtEntry": false,
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "ASPNETCORE_URLS":"https://localhost:5002"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            },
+             "launchBrowser": {
+                "enabled": false
+            }
+        },
+        {
+            "name": "Catalogo - API",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/services/NSE.Catalogo.API/bin/Debug/netcoreapp3.1/NSE.Catalogo.API.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/services/NSE.Catalogo.API",
+            "stopAtEntry": false,
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "ASPNETCORE_URLS":"https://localhost:5003"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            },
+             "launchBrowser": {
+                "enabled": false
+            }
+        },
+        {
+            "name": "Identidade - API",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/services/NSE.Identidade.API/bin/Debug/netcoreapp3.1/NSE.Identidade.API.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/services/NSE.Identidade.API",
+            "stopAtEntry": false,
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "ASPNETCORE_URLS":"https://localhost:5000"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            },
+             "launchBrowser": {
+                "enabled": false
+            }
+        },
+        {
+            "name": "Pagamento - API",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/services/NSE.Pagamento.API/bin/Debug/netcoreapp3.1/NSE.Pagamento.API.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/services/NSE.Pagamento.API",
+            "stopAtEntry": false,
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "ASPNETCORE_URLS":"https://localhost:5005"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            },
+             "launchBrowser": {
+                "enabled": false
+            }
+        },
+        {
+            "name": "Pedidos - API",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/services/NSE.Pedidos.API/bin/Debug/netcoreapp3.1/NSE.Pedidos.API.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/services/NSE.Pedidos.API",
+            "stopAtEntry": false,
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "ASPNETCORE_URLS":"https://localhost:5006"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            },
+             "launchBrowser": {
+                "enabled": false
+            }
+        },    
+        {
+            "name": "WebApp - Web",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
@@ -16,20 +132,30 @@
             "stopAtEntry": false,
             "serverReadyAction": {
                 "action": "openExternally",
-                "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+                // "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
             },
             "env": {
-                "ASPNETCORE_ENVIRONMENT": "Development"
+                "ASPNETCORE_ENVIRONMENT": "Development",
+                "ASPNETCORE_URLS":"https://localhost:5008"
+
             },
             "sourceFileMap": {
                 "/Views": "${workspaceFolder}/Views"
             }
         },
+    ],
+    "compounds": [
         {
-            "name": ".NET Core Attach",
-            "type": "coreclr",
-            "request": "attach",
-            "processId": "${command:pickProcess}"
+            "name": "Start APIs",
+            "configurations": [
+                "BFF - API",
+                "Carrinho - API",
+                "Catalogo - API",
+                "Identidade - API",
+                "Pagamento - API",
+                "Pedidos - API",
+                "WebApp - Web"
+            ]
         }
     ]
 }

@@ -5,12 +5,18 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using NSE.Bff.Compras.Models;
+using NSE.Core.Communication;
+using System.Collections.Generic;
 
 namespace NSE.Bff.Compras.Services
 {
     public interface IPedidoService
     {
         Task<VoucherDTO> ObterVoucherPorCodigo(string codigo);
+         Task<ResponseResult> FinalizarPedido(PedidoDTO pedido);
+        Task<PedidoDTO> ObterUltimoPedido();
+        Task<IEnumerable<PedidoDTO>> ObterListaPorClienteId();
+
     }
 
     public class PedidoService : Service, IPedidoService
@@ -23,9 +29,42 @@ namespace NSE.Bff.Compras.Services
             _httpClient.BaseAddress = new Uri(settings.Value.PedidoUrl);
         }
 
+          public async Task<ResponseResult> FinalizarPedido(PedidoDTO pedido)
+        {
+            var pedidoContent = ObterConteudo(pedido);
+
+            var response = await _httpClient.PostAsync("/pedido/", pedidoContent);
+
+            if (!TratarErrosResponse(response)) return await DeserializarObjetoResponse<ResponseResult>(response);
+
+            return ReturnOk();
+        }
+
+        public async Task<PedidoDTO> ObterUltimoPedido()
+        {
+            var response = await _httpClient.GetAsync("/pedido/ultimo/");
+
+            if (response.StatusCode == HttpStatusCode.NotFound) return null;
+
+            TratarErrosResponse(response);
+
+            return await DeserializarObjetoResponse<PedidoDTO>(response);
+        }
+
+        public async Task<IEnumerable<PedidoDTO>> ObterListaPorClienteId()
+        {
+            var response = await _httpClient.GetAsync("/pedido/lista-cliente/");
+
+            if (response.StatusCode == HttpStatusCode.NotFound) return null;
+
+            TratarErrosResponse(response);
+
+            return await DeserializarObjetoResponse<IEnumerable<PedidoDTO>>(response);
+        }
+
         public async Task<VoucherDTO> ObterVoucherPorCodigo(string codigo)
         {
-            var response = await _httpClient.GetAsync($"/voucher/{codigo}");
+            var response = await _httpClient.GetAsync($"/voucher/{codigo}/");
 
             if (response.StatusCode == HttpStatusCode.NotFound) return null;
 

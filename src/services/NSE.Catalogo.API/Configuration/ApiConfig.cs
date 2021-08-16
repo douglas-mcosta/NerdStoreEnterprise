@@ -42,7 +42,6 @@ namespace NSE.Catalogo.API.Configuration
 
             app.UseRouting();
             app.UseJwtConfiguration();
-            app.UseAuthorization();
             app.UseCors("Total");
             app.UseEndpoints(endpoints =>
             {

@@ -24,11 +24,15 @@ namespace NSE.Carrinho.API
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddApiConfiguration(Configuration);
-            services.AddMessageBusConfiguration(Configuration);
+           services.AddApiConfiguration(Configuration);
+
             services.AddJwtConfiguration(Configuration);
+
             services.AddSwaggerConfiguration();
+
             services.RegisterServices();
+
+            services.AddMessageBusConfiguration(Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -9,23 +9,23 @@ namespace NSE.Pedidos.API.Application.Commands
     public class AdicionarPedidoCommand : Command
     {
         //Pedido
-        public Guid ClienteId { get; private set; }
-        public decimal ValorTotal { get; private set; }
-        public List<PedidoItemDTO> PedidoItems { get; private set; }
+        public Guid ClienteId { get; set; }
+        public decimal ValorTotal { get; set; }
+        public List<PedidoItemDTO> PedidoItems { get; set; }
 
         //Voucher
-        public string VoucherCodigo { get; private set; }
-        public bool VoucherUtilizado { get; private set; }
-        public decimal Desconto { get; private set; }
+        public string VoucherCodigo { get; set; }
+        public bool VoucherUtilizado { get; set; }
+        public decimal Desconto { get; set; }
 
         //Endereco
-        public EnderecoDTO Endereco { get; private set; }
+        public EnderecoDTO Endereco { get; set; }
 
         //Cartao
-        public string NumeroCartao { get; private set; }
-        public string NomeCartao { get; private set; }
-        public string ExpiracaoCartao { get; private set; }
-        public string CvvCartao { get; private set; }
+        public string NumeroCartao { get; set; }
+        public string NomeCartao { get; set; }
+        public string ExpiracaoCartao { get; set; }
+        public string CvvCartao { get; set; }
 
         public override bool EhValido()
         {

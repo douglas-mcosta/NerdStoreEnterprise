@@ -8,10 +8,10 @@ namespace NSE.Pedidos.Domain.Pedidos
 {
     public class Pedido : Entity, IAggregateRoot
     {
-        public Pedido(Guid clientId, decimal valorTotal, List<PedidoItem> pedidoItems,
+        public Pedido(Guid clienteId, decimal valorTotal, List<PedidoItem> pedidoItems,
             bool voucherUtilizado = false, decimal desconto = 0, Guid? voucherId = null)
         {
-            ClientId = clientId;
+            ClienteId = clienteId;
             ValorTotal = valorTotal;
             _pedidoItems = pedidoItems;
 
@@ -23,7 +23,7 @@ namespace NSE.Pedidos.Domain.Pedidos
         private Pedido(){}
        
         public int Codigo { get; private set; }
-        public Guid ClientId { get; private set; }
+        public Guid ClienteId { get; private set; }
         public Guid? VoucherId { get; private set; }
         public bool VoucherUtilizado { get; private set; }
         public decimal Desconto { get; private set; }
@@ -61,10 +61,12 @@ namespace NSE.Pedidos.Domain.Pedidos
 
         private void CalcularValorTotalDesconto()
         {
+            if (!VoucherUtilizado) return;
+
             decimal desconto = 0;
             var valor = ValorTotal;
 
-            if (Voucher.TipoDesconto == TipoDescontoVoucher.Porcentagem)
+            if (Voucher?.TipoDesconto == TipoDescontoVoucher.Porcentagem)
             {
                 if (Voucher.Percentual.HasValue)
                 {
