@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using NSE.Pedidos.Domain.Pedidos;
-using NSE.Pedidos.Domain.Vouchers;
 
 namespace NSE.Pedidos.API.Application.DTO
 {
     public class PedidoDTO
     {
         public Guid Id { get; set; }
+        public Guid ClienteId { get; set; }
         public int Codigo { get; set; }
         public int Status { get; set; }
         public DateTime Data { get; set; }
@@ -25,6 +25,7 @@ namespace NSE.Pedidos.API.Application.DTO
             var pedidoDto = new PedidoDTO
             {
                 Id = pedido.Id,
+                ClienteId = pedido.ClienteId,
                 Codigo = pedido.Codigo,
                 Status = (int)pedido.PedidoStatus,
                 Data = pedido.DataCadastro,

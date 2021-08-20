@@ -21,7 +21,7 @@ namespace NSE.Catalogo.API.Data.Mapping
                 .IsRequired()
                 .HasColumnType("varchar(250)");
 
-            builder.ToTable("produtos");
+            builder.ToTable("Produtos");
         }
     }
 }

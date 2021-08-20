@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using FluentValidation.Results;
 using MediatR;
 using NSE.Core.Messages;
+using NSE.Core.Messages.Integration;
+using NSE.MessageBus;
 using NSE.Pedidos.API.Application.DTO;
 using NSE.Pedidos.API.Application.Events;
 using NSE.Pedidos.Domain.Pedidos;
@@ -17,11 +19,13 @@ namespace NSE.Pedidos.API.Application.Commands
     {
         private readonly IPedidoRepository _pedidoRepository;
         private readonly IVoucherRepository _voucherRepository;
+        private readonly IMessageBus _bus;
 
-        public PedidoCommandHandler(IPedidoRepository pedidoRepository, IVoucherRepository voucherRepository)
+        public PedidoCommandHandler(IPedidoRepository pedidoRepository, IVoucherRepository voucherRepository, IMessageBus bus)
         {
             _pedidoRepository = pedidoRepository;
             _voucherRepository = voucherRepository;
+            _bus = bus;
         }
         public async Task<ValidationResult> Handle(AdicionarPedidoCommand message, CancellationToken cancellationToken)
         {
@@ -34,11 +38,11 @@ namespace NSE.Pedidos.API.Application.Commands
             //validar pedido
             if (!ValidarPedido(pedido)) return ValidationResult;
             //processar pagamento
-            if (!ProcessarPagamento(pedido)) return ValidationResult;
+            if (!await ProcessarPagamento(pedido, message)) return ValidationResult;
             //se pagamento ok
             pedido.AutorizarPedido();
             //adicionar evento
-            pedido.AdicionarEvento(new PedidoRealizadoEvent(pedido.Id,pedido.ClienteId));
+            pedido.AdicionarEvento(new PedidoRealizadoEvent(pedido.Id, pedido.ClienteId));
             //adicionar pedido repositorio
             _pedidoRepository.Adicionar(pedido);
             //persistir dados de pedido e voucher
@@ -118,9 +122,30 @@ namespace NSE.Pedidos.API.Application.Commands
             return true;
         }
 
-        public bool ProcessarPagamento(Pedido pedido)
+        public async Task<bool> ProcessarPagamento(Pedido pedido, AdicionarPedidoCommand message)
         {
-            return true;
+
+            var pedidoIniciado = new PedidoIniciadoIntegrationEvent
+            {
+                PedidoId = pedido.Id,
+                ClienteId = pedido.ClienteId,
+                Valor = pedido.ValorTotal,
+                TipoPagamento = 1, //alterar se tiver mais tipos,
+                NomeCartao = message.NomeCartao,
+                NumeroCartao = message.NumeroCartao,
+                MesAnoVencimento = message.ExpiracaoCartao,
+                CVV = message.CvvCartao
+            };
+
+            var result = await _bus.RequestAsync<PedidoIniciadoIntegrationEvent, ResponseMessage>(pedidoIniciado);
+
+            if (result.ValidationResult.IsValid) return true;
+
+            foreach(var erro in result.ValidationResult.Errors)
+            {
+                AdicionarErro(erro.ErrorMessage);
+            }
+            return false;
         }
     }
 }

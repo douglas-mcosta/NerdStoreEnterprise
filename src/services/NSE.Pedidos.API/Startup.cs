@@ -26,11 +26,11 @@ namespace NSE.Pedidos.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddApiConfiguration(Configuration);
-            services.AddMessageBusConfiguration(Configuration);
             services.AddMediatR(typeof(Startup));
             services.AddJwtConfiguration(Configuration);
             services.AddSwaggerConfiguration();
             services.RegisterServices();
+            services.AddMessageBusConfiguration(Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

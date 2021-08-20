@@ -28,7 +28,7 @@ namespace NSE.Bff.Compras.Controllers
         public async Task<IActionResult> AdicionarPedido(PedidoDTO pedido)
         {
             var carrinho = await _carrinhoService.ObterCarrinho();
-            var produtos = await _catalogoService.ObterItens(carrinho.Itens.Select(p => p.ProdutoId));
+            var produtos = await _catalogoService.ObterItens(carrinho.Itens.Select(p => p.ProdutoId).ToList());
             var endereco = await _clienteService.ObterEndereco();
 
             if (!await ValidarCarrinhoProdutos(carrinho, produtos)) return CustomResponse();

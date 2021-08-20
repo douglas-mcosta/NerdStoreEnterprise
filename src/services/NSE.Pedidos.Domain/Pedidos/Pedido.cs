@@ -20,8 +20,8 @@ namespace NSE.Pedidos.Domain.Pedidos
             VoucherId = voucherId;
         }
 
-        private Pedido(){}
-       
+        private Pedido() { }
+
         public int Codigo { get; private set; }
         public Guid ClienteId { get; private set; }
         public Guid? VoucherId { get; private set; }
@@ -86,5 +86,11 @@ namespace NSE.Pedidos.Domain.Pedidos
             ValorTotal = valor < 0 ? 0 : valor;
             Desconto = desconto;
         }
+
+        public void FinalizarPedido() =>
+            PedidoStatus = PedidoStatus.Pago;
+
+        public void CancelarPedido() =>
+            PedidoStatus = PedidoStatus.Cancelado;
     }
 }

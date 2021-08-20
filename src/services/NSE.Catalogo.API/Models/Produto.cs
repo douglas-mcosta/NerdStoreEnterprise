@@ -12,5 +12,18 @@ namespace NSE.Catalogo.API.Models
         public DateTime DataCadastro { get; set; }
         public string Imagem { get; set; }
         public int QuantidadeEstoque { get; set; }
+
+        public bool EstaDiponivel(int quantidade)
+        {
+            return QuantidadeEstoque >= quantidade && Ativo;
+        }
+
+        public void RetirarEstoque(int quantidade)
+        {
+            if (EstaDiponivel(quantidade))
+                QuantidadeEstoque -= quantidade;
+            else
+                throw new DomainException($"O produto {Nome} está esgotado!");
+        }
     }
 }
