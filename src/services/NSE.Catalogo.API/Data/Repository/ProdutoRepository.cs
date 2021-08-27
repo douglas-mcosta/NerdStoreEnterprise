@@ -1,12 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
-using NSE.Catalogo.API.Data;
-using NSE.Core.DomainObjects.Data;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Dapper;
+using Microsoft.EntityFrameworkCore;
+using NSE.Catalogo.API.Models;
+using NSE.Core.DomainObjects.Data;
 
-namespace NSE.Catalogo.API.Models
+namespace NSE.Catalogo.API.Data.Repository
 {
     public class ProdutoRepository : IProdutoRepository
     {
@@ -34,9 +35,31 @@ namespace NSE.Catalogo.API.Models
             return await _context.Produtos.AsNoTracking()
                 .Where(p => idsValue.Contains(p.Id) && p.Ativo).ToListAsync();
         }
-        public async Task<IEnumerable<Produto>> ObterTodos()
+        public async Task<PagedResult<Produto>> ObterTodos(int pageSize, int pageIndex, string query = null)
         {
-            return await _context.Produtos.AsNoTracking().ToListAsync();
+
+            var sql = @$"SELECT * FROM Produtos
+                        WHERE (@Nome IS NULL OR Nome LIKE '%' + @Nome + '%')
+                        ORDER BY [Nome]
+                        OFFSET {pageSize * (pageIndex - 1)} ROWS
+                        FETCH NEXT {pageSize} ROWS ONLY
+                        SELECT COUNT(Id) FROM Produtos
+                        WHERE (@Nome IS NULL OR Nome LIKE '%' + @Nome + '%')";
+
+            var multi = await _context.Database.GetDbConnection()
+                .QueryMultipleAsync(sql, new { Nome = query});
+
+            var produtos = multi.Read<Produto>();
+            var total = multi.Read<int>().FirstOrDefault();
+
+            return new PagedResult<Produto>(){ 
+                List = produtos,
+                PageIndex = pageIndex,
+                PageSize = pageSize,
+                Query = query,
+                TotalResults = total                
+                };
+
         }
 
         public void Adicionar(Produto produto)

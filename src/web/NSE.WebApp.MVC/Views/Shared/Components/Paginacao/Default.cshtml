@@ -1,0 +1,38 @@
+﻿@model IPagedList
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        <li class="page-item">
+            <a class="page-link" aria-label="Previous" asp-action="@Model.ReferenceAction" asp-route-ps="@Model.PageSize" asp-route-page="@(Model.PageIndex == 1 ? 1 : Model.PageIndex - 1)" asp-route-q="@Model.Query">
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">Previous</span>
+            </a>
+        </li>
+        @for (int i = 1; i < Model.TotalPages + 1; i++)
+        {
+            @if (i == Model.PageIndex)
+            {
+                <li class="page-item active">
+                    <a class="page-link" asp-action="Index" asp-route-ps="@Model.PageSize" asp-route-page="@i" asp-route-q="@Model.Query">
+                        @i
+                    </a>
+                </li>
+            }
+            else
+            {
+                <li class="page-item">
+                    <a class="page-link" asp-action="Index" asp-route-ps="@Model.PageSize" asp-route-page="@i" asp-route-q="@Model.Query">
+                        @i
+                    </a>
+                </li>
+            }
+
+
+        }
+        <li class="page-item">
+            <a class="page-link" aria-label="Next" asp-route-page="@(Model.PageIndex == Model.TotalPages ? Model.TotalPages : Model.PageIndex + 1)">
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span>
+            </a>
+        </li>
+    </ul>
+</nav>
