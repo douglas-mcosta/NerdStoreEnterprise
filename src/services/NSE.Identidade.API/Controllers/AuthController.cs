@@ -2,11 +2,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using NetDevPack.Security.Jwt.Interfaces;
 using NSE.Core.Messages.Integration;
 using NSE.Identidade.API.Models;
 using NSE.MessageBus;
 using NSE.WebApi.Core.Controllers;
 using NSE.WebApi.Core.Identidate;
+using NSE.WebApi.Core.Usuario;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -24,17 +26,22 @@ namespace NSE.Identidade.API.Controllers
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly UserManager<IdentityUser> _userManager;
         private readonly Token _appSettings;
-
         private readonly IMessageBus _bus;
+        private readonly IAspNetUser _aspNetUser;
+        private readonly IJsonWebKeySetService _jsonWebKeySetService;
 
         public AuthController(SignInManager<IdentityUser> signInManager,
                               UserManager<IdentityUser> userManager,
-                              IOptions<Token> appSettings, IMessageBus bus)
+                              IOptions<Token> appSettings, IMessageBus bus,
+                              IAspNetUser aspNetUser,
+                              IJsonWebKeySetService jsonWebKeySetService)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _appSettings = appSettings.Value;
             _bus = bus;
+            _aspNetUser = aspNetUser;
+            _jsonWebKeySetService = jsonWebKeySetService;
         }
 
         [HttpPost("nova-conta")]
@@ -137,18 +144,18 @@ namespace NSE.Identidade.API.Controllers
 
         private string CodificarToken(ClaimsIdentity claims)
         {
+            var currentIssuer = $"{_aspNetUser.ObterHttpContext().Request.Scheme}://{_aspNetUser.ObterHttpContext().Request.Host}";
             //Para manipular o token
             var tokenHandle = new JwtSecurityTokenHandler();
             //Key
-            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+            var key = _jsonWebKeySetService.GetCurrentSigningCredentials();
             //Gerar o token
             var token = tokenHandle.CreateToken(new SecurityTokenDescriptor
             {
-                Issuer = _appSettings.Emissor,
-                Audience = _appSettings.ValidoEm,
+                Issuer = currentIssuer,
                 Subject = claims,
-                Expires = DateTime.UtcNow.AddHours(_appSettings.ExpiracaoHoras),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                Expires = DateTime.UtcNow.AddHours(1),
+                SigningCredentials = key
             });
             //Escrever o token. Serializar no padrão da web
             var encodedToken = tokenHandle.WriteToken(token);
