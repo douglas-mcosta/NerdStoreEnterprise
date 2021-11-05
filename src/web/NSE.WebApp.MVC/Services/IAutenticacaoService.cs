@@ -7,5 +7,10 @@ namespace NSE.WebApp.MVC.Services
     {
         Task<UsuarioRespostaLogin> Register(UsuarioRegistro usuario);
         Task<UsuarioRespostaLogin> Login(UsuarioLogin login);
+        Task RealizarLogin(UsuarioRespostaLogin resposta);
+        Task<UsuarioRespostaLogin> UtilizarRefreshToken(string refreshToken);
+        Task Logout();
+        bool TokenExpirado();
+        Task<bool> RefreshTokenEhValido();
     }
 }

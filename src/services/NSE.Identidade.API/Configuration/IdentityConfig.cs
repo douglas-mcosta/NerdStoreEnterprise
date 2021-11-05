@@ -16,6 +16,8 @@ namespace NSE.Identidade.API.Configuration
         public static IServiceCollection AddIdentityConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
 
+            var appSettingsSection = configuration.GetSection("AppTokenSettings");
+            services.Configure<AppTokenSettings>(appSettingsSection);
 
             services.AddJwksManager()
                 .PersistKeysToDatabaseStore<ApplicationDbContext>();
@@ -30,13 +32,11 @@ namespace NSE.Identidade.API.Configuration
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
-            services.AddJwtConfiguration(configuration);
             return services;
         }
 
         public static IApplicationBuilder UseIdentityConfiguration(this IApplicationBuilder app)
         {
-            app.UseJwtConfiguration();
             return app;
         }
     }

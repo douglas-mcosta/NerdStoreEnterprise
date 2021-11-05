@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NSE.Carrinho.API.Data;
+using NSE.Carrinho.API.Services.gRPC;
 using NSE.WebApi.Core.Identidate;
 
 namespace NSE.Carrinho.API.Configuration
@@ -18,6 +19,7 @@ namespace NSE.Carrinho.API.Configuration
              options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
             services.AddControllers();
+            services.AddGrpc();
 
             services.AddCors(options =>
             {
@@ -48,6 +50,7 @@ namespace NSE.Carrinho.API.Configuration
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapGrpcService<CarrinhoGrpcService>().RequireCors("Total");
             });
         }
     }

@@ -1,4 +1,5 @@
 {
+  "$schema": "http://json.schemastore.org/launchsettings.json",
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
@@ -7,39 +8,23 @@
       "sslPort": 44333
     }
   },
-  "$schema": "http://json.schemastore.org/launchsettings.json",
   "profiles": {
-    //"IIS - Dev": {
-    //  "commandName": "IISExpress",
-    //  "launchBrowser": true,
-    //  "launchUrl": "swagger",
-    //  "environmentVariables": {
-    //    "ASPNETCORE_ENVIRONMENT": "Development"
-    //  }
-    //},
-    //"IIS - Prod": {
-    //  "commandName": "IISExpress",
-    //  "launchBrowser": true,
-    //  "launchUrl": "swagger",
-    //  "environmentVariables": {
-    //    "ASPNETCORE_ENVIRONMENT": "Production"
-    //  }
-    //},
     "Self-Host - Development": {
       "commandName": "Project",
-      "launchBrowser": false,
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "applicationUrl": "https://localhost:5004;"
+    },
+    "WSL": {
+      "commandName": "WSL2",
+      "launchUrl": "https://localhost:5004/swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "ASPNETCORE_URLS": "https://localhost:5004;"
+      },
+      "distributionName": ""
     }
-    //"Docker": {
-    //  "commandName": "Docker",
-    //  "launchBrowser": true,
-    //  "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/weatherforecast",
-    //  "publishAllPorts": true,
-    //  "useSSL": true
-    //}
   }
 }

@@ -34,7 +34,6 @@ namespace NSE.Identidade.API
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddScoped<IAspNetUser, AspNetUser>();
             services.AddIdentityConfiguration(Configuration);
             services.AddApiConfiguration();
             services.AddSwaggerConfiguration();

@@ -30,6 +30,11 @@ namespace NSE.WebApi.Core.Usuario
         {
             return EstaAutenticado() ? _accessor.HttpContext.User.GetUserToken() : "";
         }
+        public string ObterUserRefreshToken()
+        {
+            return EstaAutenticado() ? _accessor.HttpContext.User.GetUserRefreshToken() : "";
+
+        }
 
         public bool EstaAutenticado()
         {
@@ -50,5 +55,7 @@ namespace NSE.WebApi.Core.Usuario
         {
             return _accessor.HttpContext;
         }
+
+        
     }
 }

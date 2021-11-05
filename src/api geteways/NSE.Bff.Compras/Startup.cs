@@ -35,6 +35,7 @@ namespace NSE.Bff.Compras
             services.AddSwaggerConfiguration();
             services.RegisterServices();
             services.AddMessageBusConfiguration(Configuration);
+            services.ConfigureGrpcService(Configuration);
 
         }
 

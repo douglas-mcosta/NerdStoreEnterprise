@@ -16,7 +16,6 @@ namespace NSE.WebApp.MVC.Extensions
             foreach (var t in data)
             {
                 sBuilder.Append(t.ToString("x2"));
-                var teste = t.ToString("x2");
             }
 
             return sBuilder.ToString();
