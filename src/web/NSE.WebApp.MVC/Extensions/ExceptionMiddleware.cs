@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Http;
 using NSE.WebApp.MVC.Services;
 using Polly.CircuitBreaker;
-using Refit;
 using System;
 using System.Net;
 using System.Threading.Tasks;
@@ -29,14 +28,6 @@ namespace NSE.WebApp.MVC.Extensions
             catch (CustomHttpResponseException ex)
             {
 
-                HandleRequestExcepitionAsync(httpContext, ex.StatusCode);
-            }
-            catch (ValidationApiException ex)
-            {
-                HandleRequestExcepitionAsync(httpContext, ex.StatusCode);
-            }
-            catch (ApiException ex)
-            {
                 HandleRequestExcepitionAsync(httpContext, ex.StatusCode);
             }
             catch (BrokenCircuitException)

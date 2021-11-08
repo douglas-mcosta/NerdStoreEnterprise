@@ -7,18 +7,21 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using NSE.Pagamentos.API.Models;
 using NSE.Core.DomainObjects;
+using Microsoft.Extensions.Logging;
 
 namespace NSE.Pagamentos.API.Services
 {
     public class PagamentoIntegrationHandler : BackgroundService
     {
+        private readonly ILogger<PagamentoIntegrationHandler> _log;
         private readonly IMessageBus _bus;
         private readonly IServiceProvider _serviceProvider;
 
-        public PagamentoIntegrationHandler(IMessageBus bus, IServiceProvider serviceProvider)
+        public PagamentoIntegrationHandler(IMessageBus bus, IServiceProvider serviceProvider, ILogger<PagamentoIntegrationHandler> log)
         {
             _bus = bus;
             _serviceProvider = serviceProvider;
+            _log = log;
         }
 
 
@@ -31,7 +34,11 @@ namespace NSE.Pagamentos.API.Services
         private void SetSubscribe()
         {
             _bus.SubscribeAsync<PedidoCanceladoIntegrationEvent>("PedidoCancelado", async request =>
-            await CancelarPagamento(request));
+            {
+                _log.LogInformation("Iniciando Cancelamento de Pedido");
+                await CancelarPagamento(request);
+            }
+            );
 
             _bus.SubscribeAsync<PedidoBaixadoEstoqueIntegrationEvent>("PedidoBaixaEstoque", async request => 
             await CapturarPagamento(request));
@@ -45,9 +52,11 @@ namespace NSE.Pagamentos.API.Services
 
         private async Task<ResponseMessage> AutorizarPagamento(PedidoIniciadoIntegrationEvent message)
         {
+            _log.LogInformation("Iniciando AutorizarPagamento de Pedido");
+
             ResponseMessage response;
 
-            using (var scope = _serviceProvider.CreateScope())
+            using (IServiceScope scope = _serviceProvider.CreateScope())
             {
                 var pagamentoService = scope.ServiceProvider.GetRequiredService<IPagamentoService>();
 

@@ -1,20 +1,19 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NSE.Catalogo.API.Models;
 using NSE.Core.DomainObjects;
 using NSE.Core.Messages.Integration;
 using NSE.MessageBus;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace NSE.Catalogo.API.Services
 {
     public class CatalogoIntegrationHandler : BackgroundService
     {
-
         private readonly IMessageBus _bus;
         private readonly IServiceProvider _serviceProvider;
 
@@ -23,20 +22,19 @@ namespace NSE.Catalogo.API.Services
             _serviceProvider = serviceProvider;
             _bus = bus;
         }
-
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
             SetSubscribers();
             return Task.CompletedTask;
         }
 
-       private void SetSubscribers()
+        private void SetSubscribers()
         {
             _bus.SubscribeAsync<PedidoAutorizadoIntegrationEvent>("PedidoAutorizado", async request =>
                 await BaixarEstoque(request));
         }
 
-         private async Task BaixarEstoque(PedidoAutorizadoIntegrationEvent message)
+        private async Task BaixarEstoque(PedidoAutorizadoIntegrationEvent message)
         {
             using (var scope = _serviceProvider.CreateScope())
             {
@@ -55,7 +53,7 @@ namespace NSE.Catalogo.API.Services
                 foreach (var produto in produtos)
                 {
                     var quantidadeProduto = message.Itens.FirstOrDefault(p => p.Key == produto.Id).Value;
-                    
+
                     if (produto.EstaDiponivel(quantidadeProduto))
                     {
                         produto.RetirarEstoque(quantidadeProduto);

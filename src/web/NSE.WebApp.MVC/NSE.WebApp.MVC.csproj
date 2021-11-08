@@ -9,8 +9,32 @@
   </PropertyGroup>
 
  <PropertyGroup>
-   <LangVersion>9</LangVersion>
+   <LangVersion>8</LangVersion>
  </PropertyGroup>
+
+ <ItemGroup>
+   <None Include="wwwroot\images\produtos\4head.webp" />
+   <None Include="wwwroot\images\produtos\Branca 4head.webp" />
+   <None Include="wwwroot\images\produtos\Branco Tiltado.webp" />
+   <None Include="wwwroot\images\produtos\caneca-bbt.webp" />
+   <None Include="wwwroot\images\produtos\caneca-cogumelo.webp" />
+   <None Include="wwwroot\images\produtos\caneca-Ozob.webp" />
+   <None Include="wwwroot\images\produtos\Heisenberg.webp" />
+   <None Include="wwwroot\images\produtos\Kappa.webp" />
+   <None Include="wwwroot\images\produtos\MacGyver.webp" />
+   <None Include="wwwroot\images\produtos\Maestria.webp" />
+   <None Include="wwwroot\images\produtos\My Yoda.webp" />
+   <None Include="wwwroot\images\produtos\Pato.webp" />
+   <None Include="wwwroot\images\produtos\Quack.webp" />
+   <None Include="wwwroot\images\produtos\Rick And Morty Captured.webp" />
+   <None Include="wwwroot\images\produtos\Rick And Morty.webp" />
+   <None Include="wwwroot\images\produtos\Say My Name.webp" />
+   <None Include="wwwroot\images\produtos\support.webp" />
+   <None Include="wwwroot\images\produtos\tiltado.webp" />
+   <None Include="wwwroot\images\produtos\Tryhard.webp" />
+   <None Include="wwwroot\images\produtos\Xaviers School.webp" />
+   <None Include="wwwroot\images\produtos\Yoda.webp" />
+ </ItemGroup>
  
   <ItemGroup>
     <PackageReference Include="Grpc.Core.Api" Version="2.41.1" />
@@ -20,8 +44,6 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
 	  <PackageReference Include="Microsoft.Extensions.Http.Polly" Version="3.1.14" />
-
-	  <PackageReference Include="refit" Version="6.0.38" />
   </ItemGroup>
 
   <ItemGroup>

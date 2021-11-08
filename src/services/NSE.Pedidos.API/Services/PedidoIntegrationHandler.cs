@@ -12,7 +12,7 @@ namespace NSE.Pedidos.API.Services
 {
     public class PedidoIntegrationHandler : BackgroundService
     {
-         private readonly IMessageBus _bus;
+        private readonly IMessageBus _bus;
         private readonly IServiceProvider _serviceProvider;
 
         public PedidoIntegrationHandler(IServiceProvider serviceProvider, IMessageBus bus)

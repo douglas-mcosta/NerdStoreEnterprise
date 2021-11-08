@@ -123,7 +123,7 @@ namespace NSE.WebApp.MVC.Services
                 VoucherCodigo = carrinho.Voucher?.Codigo
             };
 
-            if (endereco is not null)
+            if (endereco != null)
             {
                 pedido.Endereco = new EnderecoViewModel
                 {

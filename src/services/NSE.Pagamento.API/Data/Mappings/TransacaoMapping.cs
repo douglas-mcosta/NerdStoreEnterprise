@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using NSE.Pagamentos.API.Models;
 
-namespace NSE.Clientes.API.Data.Mappings
+namespace NSE.Pagamentos.API.Data.Mappings
 {
     public class TransacaoMapping : IEntityTypeConfiguration<Transacao>
     {
